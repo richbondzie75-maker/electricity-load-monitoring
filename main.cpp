@@ -25,19 +25,16 @@ double calcKwh(double watts, double hours)
 double totalDailyKwh(Appliance appliances[], int count)
 {
     double total = 0;
-
     for (int i = 0; i < count; i++)
     {
         total += calcKwh(appliances[i].watts, appliances[i].hours);
     }
-
     return total;
 }
 
 // Function to register appliance
 void registerAppliance(Appliance appliances[], int &count)
 {
-
     if (count >= MAX)
     {
         cout << "Maximum appliances reached.\n";
@@ -55,14 +52,12 @@ void registerAppliance(Appliance appliances[], int &count)
     cin.ignore();
 
     count++;
-
     cout << "Appliance registered successfully.\n";
 }
 
 // Function to view appliances
 void viewAppliances(Appliance appliances[], int count)
 {
-
     if (count == 0)
     {
         cout << "No appliances registered.\n";
@@ -71,7 +66,6 @@ void viewAppliances(Appliance appliances[], int count)
 
     cout << fixed << setprecision(2);
     cout << "\n--- Appliance List ---\n";
-
     for (int i = 0; i < count; i++)
     {
         cout << i + 1 << ". "
@@ -83,10 +77,9 @@ void viewAppliances(Appliance appliances[], int count)
     }
 }
 
-// Billing function
+// Function to calculate billing
 void billing(Appliance appliances[], int count)
 {
-
     if (count == 0)
     {
         cout << "No appliances registered.\n";
@@ -108,11 +101,53 @@ void billing(Appliance appliances[], int count)
     cout << "Estimated monthly cost: " << monthlyCost << endl;
 }
 
+// Function to load appliances from file
+void loadAppliances(Appliance appliances[], int &count)
+{
+    ifstream fin("appliances.txt");
+    count = 0;
+
+    if (!fin)
+    {
+        cout << "appliances.txt not found. Starting with empty list.\n";
+        return;
+    }
+
+    while (fin >> ws && count < MAX)
+    {
+        getline(fin, appliances[count].name, '|');
+        fin >> appliances[count].watts;
+        fin.ignore(1, '|');
+        fin >> appliances[count].hours;
+        fin.ignore(1000, '\n');
+        count++;
+    }
+
+    fin.close();
+    cout << count << " appliances loaded from file.\n";
+}
+
+// Function to save appliances to file
+void saveAppliances(Appliance appliances[], int count)
+{
+    ofstream fout("appliances.txt");
+    for (int i = 0; i < count; i++)
+    {
+        fout << appliances[i].name << "|"
+             << appliances[i].watts << "|"
+             << appliances[i].hours << endl;
+    }
+    fout.close();
+    cout << "Appliances saved to file.\n";
+}
+
 int main()
 {
     Appliance appliances[MAX];
     int count = 0;
     int choice;
+
+    loadAppliances(appliances, count);
 
     do
     {
@@ -128,28 +163,21 @@ int main()
 
         switch (choice)
         {
-
         case 1:
             registerAppliance(appliances, count);
             break;
-
         case 2:
             viewAppliances(appliances, count);
             break;
-
         case 3:
             billing(appliances, count);
             break;
-
         case 4:
-            // saveAppliances(appliances, count);
-            // TODO: Save appliances to file
+            saveAppliances(appliances, count);
             break;
-
         case 5:
             cout << "Exiting program...\n";
             break;
-
         default:
             cout << "Invalid option\n";
         }
