@@ -77,7 +77,7 @@ void viewAppliances(Appliance appliances[], int count)
     }
 }
 
-// Function to calculate billing
+// Function to calculate billing and log it to a file
 void billing(Appliance appliances[], int count)
 {
     if (count == 0)
@@ -99,6 +99,16 @@ void billing(Appliance appliances[], int count)
     cout << "Total daily energy: " << totalEnergy << " kWh\n";
     cout << "Daily cost: " << dailyCost << endl;
     cout << "Estimated monthly cost: " << monthlyCost << endl;
+
+    // Log billing summary to file
+    ofstream fout("billing_summary.txt", ios::app);
+    fout << "Daily kWh: " << totalEnergy << endl;
+    fout << "Daily cost: " << dailyCost << endl;
+    fout << "Monthly cost: " << monthlyCost << endl;
+    fout << "---------------------------\n";
+    fout.close();
+
+    cout << "Billing summary saved to billing_summary.txt\n";
 }
 
 // Function to load appliances from file
