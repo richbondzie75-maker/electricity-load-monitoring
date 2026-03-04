@@ -83,6 +83,31 @@ void viewAppliances(Appliance appliances[], int count)
     }
 }
 
+// Billing function
+void billing(Appliance appliances[], int count)
+{
+
+    if (count == 0)
+    {
+        cout << "No appliances registered.\n";
+        return;
+    }
+
+    double tariff;
+    cout << "Enter electricity tariff per kWh: ";
+    cin >> tariff;
+
+    double totalEnergy = totalDailyKwh(appliances, count);
+    double dailyCost = totalEnergy * tariff;
+    double monthlyCost = dailyCost * 30;
+
+    cout << fixed << setprecision(2);
+    cout << "\n--- Billing Summary ---\n";
+    cout << "Total daily energy: " << totalEnergy << " kWh\n";
+    cout << "Daily cost: " << dailyCost << endl;
+    cout << "Estimated monthly cost: " << monthlyCost << endl;
+}
+
 int main()
 {
     Appliance appliances[MAX];
@@ -113,8 +138,7 @@ int main()
             break;
 
         case 3:
-            // billing(appliances, count);
-            // TODO: Use totalDailyKwh() to compute billing
+            billing(appliances, count);
             break;
 
         case 4:
