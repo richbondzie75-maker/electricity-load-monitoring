@@ -55,7 +55,7 @@ void registerAppliance(Appliance appliances[], int &count)
     cout << "Appliance registered successfully.\n";
 }
 
-// Function to view appliances
+// Polished view function with headings and alignment
 void viewAppliances(Appliance appliances[], int count)
 {
     if (count == 0)
@@ -65,15 +65,16 @@ void viewAppliances(Appliance appliances[], int count)
     }
 
     cout << fixed << setprecision(2);
-    cout << "\n--- Appliance List ---\n";
+    cout << "\n#   Name                     Watts   Hours   kWh/day\n";
+    cout << "------------------------------------------------------\n";
+
     for (int i = 0; i < count; i++)
     {
-        cout << i + 1 << ". "
-             << appliances[i].name << " | "
-             << appliances[i].watts << " W | "
-             << appliances[i].hours << " hrs | "
-             << calcKwh(appliances[i].watts, appliances[i].hours)
-             << " kWh/day\n";
+        cout << setw(2) << i + 1 << "  "
+             << left << setw(24) << appliances[i].name
+             << right << setw(6) << appliances[i].watts << "  "
+             << setw(5) << appliances[i].hours << "  "
+             << setw(7) << calcKwh(appliances[i].watts, appliances[i].hours) << endl;
     }
 }
 
@@ -100,7 +101,6 @@ void billing(Appliance appliances[], int count)
     cout << "Daily cost: " << dailyCost << endl;
     cout << "Estimated monthly cost: " << monthlyCost << endl;
 
-    // Log billing summary to file
     ofstream fout("billing_summary.txt", ios::app);
     fout << "Daily kWh: " << totalEnergy << endl;
     fout << "Daily cost: " << dailyCost << endl;
